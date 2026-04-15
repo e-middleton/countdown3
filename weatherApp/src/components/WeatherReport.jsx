@@ -11,47 +11,41 @@ const WeatherReport = ( {locationData, city, state, country} ) => {
 
   useEffect(() => {
     console.log(currentWeather);
-    setCurrentWeather(weather.data.timelines[0].intervals[0].values); // current weather 
-    // for hourly weather, first hour of the next day is now + 24 = weather.data.timelines[0].intervals[24].values
+    const apiKey = import.meta.env.VITE_API_KEY;
+    const lat = locationData.lat;
+    const lon = locationData.lon;
+    const location = `${lat},${lon}` ; // Lat/Long
+    const units = 'imperial';
+    const fields = "temperature,temperatureApparent,precipitationProbability,weatherCode,";
+    const timesteps = "1h"; // 1h, 1d, 1m  # get hourly data ?
 
-    // next 12 hours
-    setHourlyWeather([weather.data.timelines[0].intervals[1],
-      weather.data.timelines[0].intervals[2],
-      weather.data.timelines[0].intervals[3],
-      weather.data.timelines[0].intervals[4],
-      weather.data.timelines[0].intervals[5],
-      weather.data.timelines[0].intervals[6],
-      weather.data.timelines[0].intervals[7],
-      weather.data.timelines[0].intervals[8],
-      weather.data.timelines[0].intervals[9],
-      weather.data.timelines[0].intervals[10],
-      weather.data.timelines[0].intervals[11],
-      weather.data.timelines[0].intervals[12],
-    ])
+    const url = `https://api.tomorrow.io/v4/timelines?location=${location}&units=${units}&fields=${fields}&timesteps=${timesteps}&apikey=${apiKey}`;
 
+    const options = {method: 'GET', headers: {accept: 'application/json'}};
 
-    // const apiKey = import.meta.env.VITE_API_KEY;
-    // const lat = locationData.lat;
-    // const lon = locationData.lon;
-    // const location = `${lat},${lon}` ; // Lat/Long
-    // const units = 'imperial';
-    // const fields = "temperature,temperatureApparent,precipitationProbability,weatherCode,";
-    // const timesteps = "1h"; // 1h, 1d, 1m  # get hourly data ?
-
-    // const url = `https://api.tomorrow.io/v4/timelines?location=${location}&units=${units}&fields=${fields}&timesteps=${timesteps}&apikey=${apiKey}`;
-
-    // const options = {method: 'GET', headers: {accept: 'application/json'}};
-
-    // // fetch(url, options)
-    // fetch('./weather.json')
-    //   .then(response => response.json())
-    //   .then(output => {
-    //     console.log(output);
-    //     const jsonString = JSON.stringify(output);
-    //     console.log(jsonString);
-    //     setCurrentWeather(output.data.timelines[0].intervals[0].values);
-    //   })
-    //   .catch(err => console.error(err));
+    fetch(url, options)
+      .then(response => response.json())
+      .then(output => {
+        console.log(output);
+        const jsonString = JSON.stringify(output);
+        console.log(jsonString);
+        setCurrentWeather(output.data.timelines[0].intervals[0].values); // current weather 
+        // next 12 hours
+        setHourlyWeather([output.data.timelines[0].intervals[1],
+          output.data.timelines[0].intervals[2],
+          output.data.timelines[0].intervals[3],
+          output.data.timelines[0].intervals[4],
+          output.data.timelines[0].intervals[5],
+          output.data.timelines[0].intervals[6],
+          output.data.timelines[0].intervals[7],
+          output.data.timelines[0].intervals[8],
+          output.data.timelines[0].intervals[9],
+          output.data.timelines[0].intervals[10],
+          output.data.timelines[0].intervals[11],
+          output.data.timelines[0].intervals[12],
+        ])
+      })
+      .catch(err => console.error(err));
   }, [locationData])
 
   return (
@@ -64,7 +58,7 @@ const WeatherReport = ( {locationData, city, state, country} ) => {
         {/* <p>The main report for this location is: {weatherData.values.}</p> */}
         <p> {currentWeather ? `The temperature is ${currentWeather.temperature} degrees Fahrenheit` : null }</p>
         <p> {currentWeather ? `though it feels like ${currentWeather.temperatureApparent}` : null }</p>
-        <p> {currentWeather ? `There is a ${currentWeather.precipicationProbability} chance of rain` : null }</p>
+        <p> {currentWeather ? `There is a ${currentWeather.precipitationProbability + "\u0025"} chance of rain` : null }</p>
       </div>
       <div>
         <h3>The temperature over the next 12 hours: </h3>
