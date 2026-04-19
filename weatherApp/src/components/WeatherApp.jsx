@@ -9,26 +9,6 @@ import './../App.css';
 // const obj2 = JSON.parse(tmp2)
 
 const WeatherApp = () => {
-  // const [locationData, setLocationData] = useState(obj2);
-
-  // useEffect(() => {
-  //   const fetchLocation = async() => {
-  //     try {
-  //       const API_KEY = import.meta.env.VITE_API_KEY
-  //       let city = "Minneapolis"
-  //       let state = "MN"
-  //       let country = "US"
-  //       let limit = 1
-  //       const data = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&limit=${limit}&appid=${API_KEY}`)
-  //       const obj = await data.json();
-  //       console.log(obj);
-  //       setLocationData(obj);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   fetchLocation();
-  // }, [])
   const [locationData, setLocationData] = useState({ city: 'Minneapolis', state: 'MN', country: 'USA' });
   const [latLon, setLatLon] = useState({lat: null, lon:null});
   const [entered, setEntered] = useState(false);
@@ -59,45 +39,49 @@ const WeatherApp = () => {
 
   return (
     <>
-    <div className="locationForm">
-      <Box
-        component="form"
-        sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
-        noValidate
-        autoComplete="off"
-      >
-        <div>
-          <TextField 
-          label="City"
-          name="city" 
-          value={locationData.city} 
-          onChange={(e) => {setLocationData({...locationData, city: e.target.value})} }
-          />
-          <TextField 
-          label="State"
-          name="state" 
-          value={locationData.state} 
-          onChange={(e) => setLocationData({...locationData, state: e.target.value})} 
-          />
-          <TextField 
-          label="Country"
-          name="country" 
-          value={locationData.country} 
-          onChange={(e) => setLocationData({...locationData, country: e.target.value})} 
-          />
-          
-        
-        </div>
-      </Box>
-      <Button 
-        variant="contained"
-        onClick={() => setEntered(prevState => !prevState)}
-        >
-        Enter
-        </Button>
-      </div>
+    <div className='weatherAppBody'>
+      <div className='weatherAppContent'>
+        <div className="locationForm">
+          <Box
+            component="form"
+            sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
+            noValidate
+            autoComplete="off"
+          >
+            <div>
+              <TextField 
+              label="City"
+              name="city" 
+              value={locationData.city} 
+              onChange={(e) => {setLocationData({...locationData, city: e.target.value})} }
+              />
+              <TextField 
+              label="State"
+              name="state" 
+              value={locationData.state} 
+              onChange={(e) => setLocationData({...locationData, state: e.target.value})} 
+              />
+              <TextField 
+              label="Country"
+              name="country" 
+              value={locationData.country} 
+              onChange={(e) => setLocationData({...locationData, country: e.target.value})} 
+              />
+              
+            
+            </div>
+          </Box>
+          <Button 
+            variant="contained"
+            onClick={() => setEntered(prevState => !prevState)}
+            >
+            Enter
+            </Button>
+          </div>
 
-      <WeatherReport locationData={latLon} city={locationData.city} state={locationData.state} country={locationData.country}/>
+          <WeatherReport locationData={latLon} city={locationData.city} state={locationData.state} country={locationData.country}/>
+          </div>
+      </div>
     </>
   );
 }
