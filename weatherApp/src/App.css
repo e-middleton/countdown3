@@ -27,3 +27,15 @@
     10px 0 8px -4px rgba(0, 0, 0, 0.5),  /* Right shadow */
     -10px 0 8px -4px rgba(0, 0, 0, 0.5); /* Left shadow */
 }
+
+.caption {
+  font-style: italic;
+  color: #555; /* Optional: lighter color */
+}
+
+.weatherImage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

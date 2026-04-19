@@ -3,6 +3,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { Box } from '@mui/material';
 import './../App.css';
+import imageName from './imageName.json' with {type:'json'}
 
 
 const HourlyReport = ( {hourlyData} ) => {
@@ -28,6 +29,11 @@ const HourlyReport = ( {hourlyData} ) => {
               <ListItemText sx={{'color':'white'}}>
                 {`${weather.startTime.split("T").pop().split(":")[0]}:00`}
               </ListItemText>
+              <img style={{maxWidth:'30%'}} 
+                src={imageName[weather.values.weatherCode] ? `./src/assets/tomorrow-weather-codes/V2_icons/small/png/${weather.values.weatherCode}0_${imageName[weather.values.weatherCode]}_small.png` : 
+                null} 
+                alt="weather symbol" 
+              />
               <ListItemText sx={{'color':'white'}}>
                 {Math.floor(weather.values.temperature) + "\u00B0" + "F"}
               </ListItemText>

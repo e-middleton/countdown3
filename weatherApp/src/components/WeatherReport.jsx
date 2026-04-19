@@ -4,13 +4,36 @@ import HourlyReport from './HourlyReport';
 // const tmp = '{"data":{"timelines":[{"timestep":"1d","endTime":"2026-04-19T11:00:00Z","startTime":"2026-04-14T11:00:00Z","intervals":[{"startTime":"2026-04-14T11:00:00Z","values":{"precipitationProbability":0,"temperature":62.35,"temperatureApparent":62.3,"weatherCode":1000}},{"startTime":"2026-04-15T11:00:00Z","values":{"precipitationProbability":0,"temperature":66.61,"temperatureApparent":66.6,"weatherCode":1001}},{"startTime":"2026-04-16T11:00:00Z","values":{"precipitationProbability":0,"temperature":72.86,"temperatureApparent":72.9,"weatherCode":1000}},{"startTime":"2026-04-17T11:00:00Z","values":{"precipitationProbability":35,"temperature":73.02,"temperatureApparent":73,"weatherCode":1001}},{"startTime":"2026-04-18T11:00:00Z","values":{"precipitationProbability":0,"temperature":40.06,"temperatureApparent":40.1,"weatherCode":1001}},{"startTime":"2026-04-19T11:00:00Z","values":{"precipitationProbability":0,"temperature":55.67,"temperatureApparent":55.7,"weatherCode":1000}}]}]}}'
 // const obj = JSON.parse(tmp);
 import weather from './weather.json' with { type: 'json' };
+import description from './weatherDescription.json' with { type : 'json' };
+import imageName from './imageName.json' with {type:'json'}
 
 const WeatherReport = ( {locationData, city, state, country} ) => {
   const [currentWeather, setCurrentWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState(null); // for the next day
+  const [weatherDescription, setWeatherDescription] = useState(null);
 
   useEffect(() => {
     console.log(currentWeather);
+
+    // // for testing
+    // setCurrentWeather(weather.data.timelines[0].intervals[0].values); // current weather 
+    // // next 12 hours
+    // setHourlyWeather([weather.data.timelines[0].intervals[1],
+    //   weather.data.timelines[0].intervals[2],
+    //   weather.data.timelines[0].intervals[3],
+    //   weather.data.timelines[0].intervals[4],
+    //   weather.data.timelines[0].intervals[5],
+    //   weather.data.timelines[0].intervals[6],
+    //   weather.data.timelines[0].intervals[7],
+    //   weather.data.timelines[0].intervals[8],
+    //   weather.data.timelines[0].intervals[9],
+    //   weather.data.timelines[0].intervals[10],
+    //   weather.data.timelines[0].intervals[11],
+    //   weather.data.timelines[0].intervals[12],
+    // ])
+
+    // setWeatherDescription(description["weatherCode"][weather.data.timelines[0].intervals[0].values.weatherCode].toLowerCase());
+    // console.log(description["weatherCode"][weather.data.timelines[0].intervals[0].values.weatherCode].toLowerCase().replaceAll(' ', '_'));
     const apiKey = import.meta.env.VITE_API_KEY;
     const lat = locationData.lat;
     const lon = locationData.lon;
@@ -26,9 +49,9 @@ const WeatherReport = ( {locationData, city, state, country} ) => {
     fetch(url, options)
       .then(response => response.json())
       .then(output => {
-        console.log(output);
-        const jsonString = JSON.stringify(output);
-        console.log(jsonString);
+        // console.log(output);
+        // const jsonString = JSON.stringify(output);
+        // console.log(jsonString);
         setCurrentWeather(output.data.timelines[0].intervals[0].values); // current weather 
         // next 12 hours
         setHourlyWeather([output.data.timelines[0].intervals[1],
@@ -44,22 +67,34 @@ const WeatherReport = ( {locationData, city, state, country} ) => {
           output.data.timelines[0].intervals[11],
           output.data.timelines[0].intervals[12],
         ])
+        setWeatherDescription(description["weatherCode"][output.data.timelines[0].intervals[0].values.weatherCode].toLowerCase());
       })
       .catch(err => console.error(err));
   }, [locationData])
 
   return (
     <>
-      <h3> {city}, {state} {country} </h3>
-      <p>Latitude of {locationData.lat}</p>
-      <p>Longitude of {locationData.lon}</p>
-      <h4>The current weather is: </h4>
-      <div>
-        {/* <p>The main report for this location is: {weatherData.values.}</p> */}
-        <p> {currentWeather ? `The temperature is ${currentWeather.temperature} degrees Fahrenheit` : null }</p>
-        <p> {currentWeather ? `though it feels like ${currentWeather.temperatureApparent}` : null }</p>
-        <p> {currentWeather ? `There is a ${currentWeather.precipitationProbability + "\u0025"} chance of rain` : null }</p>
+      <div className="currentWeather">
+        <h3> { weatherDescription ? `The current weather is ${weatherDescription}` : "Please enter a valid location" }</h3>
+        <figure className='weatherImage'>
+          <img style={{maxWidth:'30%'}} 
+            src={imageName[currentWeather.weatherCode] ? `./src/assets/tomorrow-weather-codes/V2_icons/large/png/${currentWeather.weatherCode}0_${imageName[currentWeather.weatherCode]}_large.png` : 
+            null} 
+            alt="weather symbol" 
+          />
+          <figcaption className='caption'>
+            powered by
+            <a href="https://www.tomorrow.io/weather-api/"> Tomorrow.io</a>
+          </figcaption>
+        </figure>
+        <div>
+          {/* <p>The main report for this location is: {weatherData.values.}</p> */}
+          <p> {currentWeather ? `The temperature is ${currentWeather.temperature} degrees Fahrenheit` : null }</p>
+          <p> {currentWeather ? `though it feels like ${currentWeather.temperatureApparent}` : null }</p>
+          <p> {currentWeather ? `There is a ${currentWeather.precipitationProbability + "\u0025"} chance of rain` : null }</p>
+        </div>
       </div>
+      
       <div>
         <h3>The temperature over the next 12 hours: </h3>
         {hourlyWeather? <HourlyReport hourlyData={hourlyWeather} /> : null}
