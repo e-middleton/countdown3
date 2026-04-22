@@ -39,3 +39,14 @@
   align-items: center;
   justify-content: center;
 }
+
+.currentWeather {
+  display: flex;
+  flex-direction: column;
+}
+
+.weatherDashboard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
