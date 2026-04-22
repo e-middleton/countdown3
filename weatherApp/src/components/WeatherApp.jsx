@@ -9,7 +9,7 @@ import './../App.css';
 // const obj2 = JSON.parse(tmp2)
 
 const WeatherApp = () => {
-  const [locationData, setLocationData] = useState({ city: 'Minneapolis', state: 'MN', country: 'USA' });
+  const [locationData, setLocationData] = useState({ city: 'Boston', state: 'MA', country: 'USA' });
   const [latLon, setLatLon] = useState({lat: null, lon:null});
   const [entered, setEntered] = useState(false);
 
@@ -79,7 +79,9 @@ const WeatherApp = () => {
             </Button>
           </div>
 
-          <WeatherReport locationData={latLon} city={locationData.city} state={locationData.state} country={locationData.country}/>
+          <div className="weatherDashboard">
+            <WeatherReport locationData={latLon} city={locationData.city} state={locationData.state} country={locationData.country}/>
+          </div>
           </div>
       </div>
     </>
