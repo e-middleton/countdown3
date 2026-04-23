@@ -78,10 +78,7 @@ const WeatherApp = () => {
             Enter
             </Button>
           </div>
-
-          <div className="weatherDashboard">
-            <WeatherReport locationData={latLon} city={locationData.city} state={locationData.state} country={locationData.country}/>
-          </div>
+            {locationData? <WeatherReport locationData={latLon}/> : null}
           </div>
       </div>
     </>
