@@ -8,7 +8,7 @@ import weather from './weather.json' with { type: 'json' };
 import description from './weatherDescription.json' with { type : 'json' };
 import imageName from './imageName.json' with {type:'json'}
 
-const WeatherReport = ( {locationData, city, state, country} ) => {
+const WeatherReport = ( {locationData} ) => {
   const [currentWeather, setCurrentWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState(null); // for the next day
   const [weatherDescription, setWeatherDescription] = useState(null);
@@ -16,7 +16,7 @@ const WeatherReport = ( {locationData, city, state, country} ) => {
 
   useEffect(() => {
 
-    // // for testing
+    // for testing
     // setCurrentWeather(weather.data.timelines[0].intervals[0].values); // current weather 
     // // next 12 hours
     // setHourlyWeather([weather.data.timelines[0].intervals[1],
@@ -32,25 +32,13 @@ const WeatherReport = ( {locationData, city, state, country} ) => {
     //   weather.data.timelines[0].intervals[11],
     //   weather.data.timelines[0].intervals[12]
     // ]);
-    // console.log([weather.data.timelines[0].intervals[1].startTime,
-    //   weather.data.timelines[0].intervals[2].startTime,
-    //   weather.data.timelines[0].intervals[3].startTime,
-    //   weather.data.timelines[0].intervals[4].startTime,
-    //   weather.data.timelines[0].intervals[5].startTime,
-    //   weather.data.timelines[0].intervals[6].startTime,
-    //   weather.data.timelines[0].intervals[7].startTime,
-    //   weather.data.timelines[0].intervals[8].startTime,
-    //   weather.data.timelines[0].intervals[9].startTime,
-    //   weather.data.timelines[0].intervals[10].startTime,
-    //   weather.data.timelines[0].intervals[11].startTime,
-    //   weather.data.timelines[0].intervals[12].startTime
-    // ])
 
     // const weekData = [];
     // for (let j = 0; j < 5; j++) {   // loop through 6 day
     //   let high = weather.data.timelines[0].intervals[24*j].values.temperature;
     //   let low = weather.data.timelines[0].intervals[24*j].values.temperature;
-    //   let date = weather.data.timelines[0].intervals[24*j].startTime;
+    //   let date = weather.data.timelines[0].intervals[24*j].startTime.split("T")[0];
+    //   let weatherCode = weather.data.timelines[0].intervals[24*j].values.weatherCode;
 
     //   for (let i = 0; i < 24; i++){   // loop through 24 hours
     //     // console.log(weather.data.timelines[0].intervals[(24*j)+i].values.temperature);
@@ -58,7 +46,7 @@ const WeatherReport = ( {locationData, city, state, country} ) => {
     //     if (currTemp > high)  high = currTemp;
     //     if (currTemp < low) low = currTemp;
     //   }
-    //   weekData.push({date: date, H:high, L:low})
+    //   weekData.push({date: date, H:high, L:low, weatherCode:weatherCode})
     // }
     // setWeeklyWeather(weekData);
 
@@ -104,7 +92,6 @@ const WeatherReport = ( {locationData, city, state, country} ) => {
           let high = output.data.timelines[0].intervals[24*j].values.temperature;
           let low = output.data.timelines[0].intervals[24*j].values.temperature;
           let date = output.data.timelines[0].intervals[24*j].startTime.split("T")[0];
-          let weatherCode = output.data.timelines[0].intervals[24*j].values.weatherCode;
 
           for (let i = 0; i < 24; i++){   // loop through 24 hours
             // console.log(weather.data.timelines[0].intervals[(24*j)+i].values.temperature);
@@ -112,7 +99,7 @@ const WeatherReport = ( {locationData, city, state, country} ) => {
             if (currTemp > high)  high = currTemp;
             if (currTemp < low) low = currTemp;
           }
-          weekData.push({date: date, H:high, L:low, weatherCode:weatherCode})
+          weekData.push({date: date, H:high, L:low})
         }
         setWeeklyWeather(weekData);
       })
@@ -121,30 +108,35 @@ const WeatherReport = ( {locationData, city, state, country} ) => {
 
   return (
     <>
-      <div className="currentWeather">
-        <h3> { weatherDescription ? `The current weather is ${weatherDescription}` : "Please enter a valid location" }</h3>
-        <figure className='weatherImage'>
-          <img style={{maxWidth:'30%'}} 
-            src={currentWeather ? `./src/assets/tomorrow-weather-codes/V2_icons/large/png/${currentWeather.weatherCode}0_${imageName[currentWeather.weatherCode]}_large.png` : 
-            null} 
-            alt="weather symbol" 
-          />
-          <figcaption className='caption'>
-            powered by
-            <a href="https://www.tomorrow.io/weather-api/"> Tomorrow.io</a>
-          </figcaption>
-        </figure>
-        <div>
-          {/* <p>The main report for this location is: {weatherData.values.}</p> */}
-          <p> {currentWeather ? `The temperature is ${currentWeather.temperature} degrees Fahrenheit` : null }</p>
-          <p> {currentWeather ? `though it feels like ${currentWeather.temperatureApparent}` : null }</p>
-          <p> {currentWeather ? `There is a ${currentWeather.precipitationProbability + "\u0025"} chance of rain` : null }</p>
-        </div>
+      <div className="weatherDashboard">
+        <div className="currentWeather">
 
-        <h3>The temperature over the next 12 hours: </h3>
-        {hourlyWeather? <HourlyReport hourlyData={hourlyWeather} /> : null}
+          <div className="mainWeather">
+            <h3> { weatherDescription ? `The current weather is ${weatherDescription}` : "Please enter a valid location" }</h3>
+            <figure className='weatherImage'>
+              <img style={{maxWidth:'30%'}} 
+                src={currentWeather ? `./src/assets/tomorrow-weather-codes/V2_icons/large/png/${currentWeather.weatherCode}0_${imageName[currentWeather.weatherCode]}_large.png` : 
+                null} 
+                alt="weather symbol" 
+              />
+              <figcaption className='caption'>
+                powered by
+                <a href="https://www.tomorrow.io/weather-api/"> Tomorrow.io</a>
+              </figcaption>
+            </figure>
+            <div>
+              {/* <p>The main report for this location is: {weatherData.values.}</p> */}
+              <p> {currentWeather ? `The temperature is ${currentWeather.temperature} degrees Fahrenheit` : null }</p>
+              <p> {currentWeather ? `though it feels like ${currentWeather.temperatureApparent}` : null }</p>
+              <p> {currentWeather ? `There is a ${currentWeather.precipitationProbability + "\u0025"} chance of rain` : null }</p>
+            </div>
+          </div>
+
+          <h3>The temperature over the next 12 hours: </h3>
+          {hourlyWeather? <HourlyReport hourlyData={hourlyWeather} /> : null}
+        </div>
+        {weeklyWeather ? <SevenDayWeather weeklyData={weeklyWeather}/> : null}
       </div>
-      {weeklyWeather ? <SevenDayWeather weeklyData={weeklyWeather}/> : null}
     </>
   );
 }
