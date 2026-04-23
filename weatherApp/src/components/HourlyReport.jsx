@@ -12,7 +12,7 @@ const HourlyReport = ( {hourlyData} ) => {
       <Box sx={{ flexGrow: 1,
           bgcolor: '#39a4cf',
           borderRadius: 2,
-          maxWidth: 550,
+          maxWidth: 700,
       }}>
         <List sx={{
           display: 'flex',
@@ -30,7 +30,7 @@ const HourlyReport = ( {hourlyData} ) => {
                 <ListItemText sx={{'color':'white'}}>
                   {`${weather.startTime.split("T").pop().split(":")[0]}:00`}
                 </ListItemText>
-                <img style={{maxWidth:'30%'}} 
+                <img style={{maxWidth:'30%', minWidth:'30%'}} 
                   src={imageName[weather.values.weatherCode] ? `./src/assets/tomorrow-weather-codes/V2_icons/small/png/${weather.values.weatherCode}0_${imageName[weather.values.weatherCode]}_small.png` : 
                   null} 
                   alt="weather symbol" 
