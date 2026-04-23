@@ -3,18 +3,19 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { Box } from '@mui/material';
-import imageName from './imageName.json' with {type:'json'}
 
 const SevenDayWeather = ( {weeklyData} ) => {
   return (
     <>
-      <div>
-        <h3>6 day forcast</h3>
+      <div className="weeklyForcast">
         <Box sx={{ flexGrow: 1,
-          bgcolor: '#6a7275',
+          bgcolor: '#147ba0',
           borderRadius: 2,
-          maxWidth: 550,
+          minWidth: '100%',
         }}>
+          <h3 style={{color:'white',textAlign:'center', maxHeight:'0.45em'}}>
+            6 day forcast
+          </h3>
           <List sx={{
             width: '100%',
             position: 'relative',
@@ -27,13 +28,8 @@ const SevenDayWeather = ( {weeklyData} ) => {
                   <ListItemText sx={{'color':'white'}}>
                     {weather.date}
                   </ListItemText>
-                  <img style={{maxWidth:'30%'}} 
-                    src={imageName[weather.weatherCode] ? `./src/assets/tomorrow-weather-codes/V2_icons/small/png/${weather.weatherCode}0_${imageName[weather.weatherCode]}_small.png` : 
-                    null} 
-                    alt="weather symbol" 
-                  />
                   <ListItemText sx={{'color':'white'}}>
-                    {"H: "+Math.ciel(weather.H) + "\u00B0" + "F" + " L: " + Math.floor(weather.L) +"\u00B0" + "F" }
+                  {"H: "+ Math.floor(weather.H) + "\u00B0" + "F" + " L: " + Math.floor(weather.L) +"\u00B0" + "F" }
                   </ListItemText>
                 </div>
               </ListItem>
