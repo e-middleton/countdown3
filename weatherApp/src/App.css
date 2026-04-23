@@ -43,10 +43,44 @@
 .currentWeather {
   display: flex;
   flex-direction: column;
+  margin: 0px 5px 0px 5px;
 }
 
 .weatherDashboard {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.rowContainer {
+  display: flex;
+  flex-direction: row
+}
+
+.colContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.weeklyEntry {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+.mainWeather {
+  background-color: #39a4cf;
+  border-radius: 5%;
+  margin: 5px;
+  padding: 5px;
+}
+
+.weeklyForcast{
+  display: flex;
+  flex-direction:column;
+  align-items: 'center';
+  width: 100%;
+  margin: 10px 0 0 0;
 }
