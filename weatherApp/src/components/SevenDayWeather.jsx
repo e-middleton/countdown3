@@ -14,7 +14,7 @@ const SevenDayWeather = ( {weeklyData} ) => {
           minWidth: '100%',
         }}>
           <h3 style={{color:'white',textAlign:'center', maxHeight:'0.45em'}}>
-            6 day forcast
+            5 day forcast
           </h3>
           <List sx={{
             width: '100%',
