@@ -11,7 +11,7 @@ import './../App.css';
 
 const WeatherApp = () => {
   const [locationData, setLocationData] = useState({ city: 'Boston', state: 'MA', country: 'USA' });
-  const [latLon, setLatLon] = useState({lat: null, lon:null});
+  const [latLon, setLatLon] = useState({lat: null, lon: null});
   const [entered, setEntered] = useState(false);
   const [errMessage, setErrMessage] = useState("");
 
@@ -83,6 +83,10 @@ const WeatherApp = () => {
               >
               Enter
             </Button>
+            <div className="latLon">
+              {latLon.lat ? <div> Lat: {latLon.lat.toFixed(2)} </div> : null}
+              {latLon.lon ? <div> Lon: {latLon.lon.toFixed(2)} </div> : null}
+            </div>
           </div>
           {locationData? <WeatherReport locationData={latLon}/> : null}
           <News />
