@@ -71,6 +71,7 @@
 }
 
 .mainWeather {
+  color: white;
   background-color: #39a4cf;
   border-radius: 5%;
   margin: 5px;
@@ -102,3 +103,10 @@
 }
 
 .header { font-weight: bold; }
+
+.latLon {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  font-size: 20px; 
+  padding: 5px 0px 0px 10px
+}
